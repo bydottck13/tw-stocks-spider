@@ -14,21 +14,21 @@ post_request = {'encodeURIComponent' : '1',
 	'checkbtn' : '',
 	'queryName' : 'co_id',
 	'inpuType' : 'co_id',
-	'TYPEK' : 'all',
-	'co_id' : '' }
+	'TYPEK' : 'all' }
 stocks_list = ['2230', '2357', '2379', '2380', '2317']
 
 #print("Starting to parser ids", datetime.now().isoformat(timespec='minutes'))
 with urllib.request.urlopen(twse_url) as response:
-	ids_html = response.read()
+	ids_html = response.read().decode('utf-8', 'ignore')
 	#print("Finished to parser ids", datetime.now().isoformat(timespec='minutes'))
 	ids_soup = BeautifulSoup(ids_html, 'html.parser')
 	trs = ids_soup.findAll('tr')
-	for tr in trs:
+	print(trs[0].findAll('td')[0])
+	"""for tr in trs:
 		first_td_tag = tr.find('td')
 		if first_td_tag.text.strip() != '1101　台泥':
 			continue
-		print(first_td_tag.text)
+		print(first_td_tag.text)"""
 
 
 for stock in stocks_list:

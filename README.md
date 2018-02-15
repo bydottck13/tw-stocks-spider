@@ -9,12 +9,12 @@ This program includes SQLite3 and HTML parser to process a myriad of data from T
 ## REQUIREMENTS
 * Install Beautiful Soup for python3
 ```
-$ sudo apt-get install python3-bs4
+$ sudo pip3 install -r requirements.txt
 ```
 
 * Install Beautiful Soup for python2
 ```
-$ sudo apt-get install python-bs4
+$ sudo pip install -r requirements.txt
 ```
 
 ## USAGES
