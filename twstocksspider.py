@@ -3,10 +3,12 @@
 import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 from datetime import datetime
-import sys
+from twstocklists import stock_ex_list
+import sys, time
 
 mops_url = 'http://mops.twse.com.tw/mops/web/ajax_t146sb05'
 twse_url = 'http://isin.twse.com.tw/isin/C_public.jsp?strMode=2'
+tej_url = 'http://www.tej.com.tw/webtej/doc/uid.htm'
 post_request = {'encodeURIComponent' : '1',
 	'step' : '1',
 	'firstin' : '1',
@@ -18,11 +20,11 @@ post_request = {'encodeURIComponent' : '1',
 	'queryName' : 'co_id',
 	'inpuType' : 'co_id',
 	'TYPEK' : 'all' }
-stocks_list = ['2230', '2357', '2379', '2380', '2317']
+stocks_list = {**stock_ex_list}
 
 def update():
 	#print("Starting to parser ids", datetime.now().isoformat(timespec='minutes'))
-	with urllib.request.urlopen(twse_url) as response:
+	with urllib.request.urlopen(tej_url) as response:
 		ids_html = response.read()
 		#print("Finished to parser ids", datetime.now().isoformat(timespec='minutes'))
 		ids_soup = BeautifulSoup(ids_html, 'html.parser')
@@ -36,13 +38,17 @@ def update():
 			print(first_td_tag.text)"""
 
 def gather():
-	for stock in stocks_list:
-		print("Stock id is", stock)
-		post_request['co_id'] = stock
+	for stock_id, stock_name in stocks_list.items():
+		print("Stock id is", stock_id, stock_name)
+		post_request['co_id'] = stock_id
 
 		post_data = urllib.parse.urlencode(post_request).encode()
 		with urllib.request.urlopen(mops_url, data=post_data) as response:
+			print('Response Code:', response.getcode())
 			stock_html = response.read()
+			if len(stock_html) < 500:
+				print('No retrieved any data...')
+				#time.sleep(30)
 			stock_soup = BeautifulSoup(stock_html, 'html.parser')
 			income_list = list()
 
