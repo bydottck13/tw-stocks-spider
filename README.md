@@ -19,7 +19,7 @@ $ sudo pip install -r requirements.txt
 
 ## USAGES
 ```
-$ python3 twstocksspider.py
+$ python3 twstocksspider.py [update|gather]'
 ```
 
 ## REFERENCE
